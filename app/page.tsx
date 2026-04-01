@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Modal from "./modal";
 
 const colors = ["red", "khaki", "green", "blue", "gray"];
@@ -39,7 +39,7 @@ export default function GamePage() {
     setGameOver(false);
   };
 
-  const createSequence = (stats: { burning: number; count: number }) => {
+  const createSequence = useCallback((stats: { burning: number; count: number }) => {
     setRepeating(true);
     const newSequence = [];
 
@@ -50,7 +50,7 @@ export default function GamePage() {
 
     setSequence(newSequence);
     repeatSequence(newSequence, stats);
-  };
+  }, []);
 
   const repeatSequence = async (
     selSequence: number[],
@@ -108,7 +108,7 @@ export default function GamePage() {
 
     createSequence(levelStats);
     return () => clearInterval(id);
-  }, [gameOver]);
+  }, [gameOver, createSequence, levelStats]);
 
   useEffect(() => {
     if (userBulb === -1) return;
@@ -131,7 +131,7 @@ export default function GamePage() {
         onClick={() => {
           if (hintStats.count > 0)
             setHintStats((prev) => {
-              let newValue = { show: true, count: prev.count - 1 };
+              const newValue = { show: true, count: prev.count - 1 };
               return newValue;
             });
         }}
