@@ -10,20 +10,20 @@ function delay(ms: number) {
 }
 
 export default function GamePage() {
-  let [sequence, setSequence] = useState<number[]>([]);
-  let [currentBulb, setCurrentBulb] = useState<number>(-1);
-  let [userBulb, setUserBulb] = useState<number>(-1);
-  let [gameOver, setGameOver] = useState<boolean>(false);
-  let [repeating, setRepeating] = useState<boolean>(true);
-  let [score, setScore] = useState<number>(0);
-  let [time, setTime] = useState<number>(0);
+  const [sequence, setSequence] = useState<number[]>([]);
+  const [currentBulb, setCurrentBulb] = useState<number>(-1);
+  const [userBulb, setUserBulb] = useState<number>(-1);
+  const [gameOver, setGameOver] = useState<boolean>(false);
+  const [repeating, setRepeating] = useState<boolean>(true);
+  const [score, setScore] = useState<number>(0);
+  const [time, setTime] = useState<number>(0);
 
-  let [levelStats, setLevelStats] = useState<{
+  const [levelStats, setLevelStats] = useState<{
     burning: number;
     count: number;
   }>({ burning: 3.0, count: 1 });
 
-  let [hintStats, setHintStats] = useState<{ show: boolean; count: number }>({
+  const [hintStats, setHintStats] = useState<{ show: boolean; count: number }>({
     show: false,
     count: 3,
   });
@@ -41,10 +41,10 @@ export default function GamePage() {
 
   const createSequence = (stats: { burning: number; count: number }) => {
     setRepeating(true);
-    let newSequence = [];
+    const newSequence = [];
 
     for (let i = 0; i < stats.count; i++) {
-      let rand = Math.floor(Math.random() * colors.length);
+      const rand = Math.floor(Math.random() * colors.length);
       newSequence.push(rand);
     }
 
@@ -80,7 +80,7 @@ export default function GamePage() {
 
     if (hintStats.show)
       setHintStats((prev) => {
-        let newValue = { show: false, count: prev.count };
+        const newValue = { show: false, count: prev.count };
         return newValue;
       });
   };
@@ -89,7 +89,7 @@ export default function GamePage() {
     setScore((prev) => prev + 1);
 
     setLevelStats((prev) => {
-      let next = {
+      const next = {
         burning: prev.burning * 0.9,
         count: prev.count + 1,
       };
@@ -102,7 +102,7 @@ export default function GamePage() {
   useEffect(() => {
     if (gameOver) return;
 
-    let id = setInterval(() => {
+    const id = setInterval(() => {
       setTime((prev) => prev + 1);
     }, 1000);
 
@@ -112,7 +112,7 @@ export default function GamePage() {
 
   useEffect(() => {
     if (userBulb === -1) return;
-    let id = setTimeout(() => setUserBulb(-1), 1000);
+    const id = setTimeout(() => setUserBulb(-1), 1000);
     return () => clearTimeout(id);
   }, [userBulb]);
 
